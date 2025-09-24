@@ -4,13 +4,13 @@ from datasets import Dataset
 from conllu import parse_incr
 from os import path
 
-DatasetCode = Literal["en_ewt","fr_gsd","sp_gsd","pt_gsd","ur_udtb","ug_udt","vi_vtb","fa_perdt"]
+DatasetCode = Literal["en_ewt","fr_gsd","es_gsd","pt_gsd","ur_udtb","ug_udt","vi_vtb","fa_perdt"]
 DatasetType = Literal["train","test","dev"]
 
 datasetCode2Directory : dict[DatasetCode,str] = {
     "en_ewt" : "../datasets/UD_English-EWT",
     "fr_gsd" : "../datasets/UD_French-GSD",
-    "sp_gsd" : "../datasets/UD_Spanish-GSD",
+    "es_gsd" : "../datasets/UD_Spanish-GSD",
     "pt_gsd" : "../datasets/UD_Portuguese-GSD",
     "ur_udtb" : "../datasets/UD_Urdu-UDTB" ,
     "ug_udt" : "../datasets/UD_Uyghyr-UDT",

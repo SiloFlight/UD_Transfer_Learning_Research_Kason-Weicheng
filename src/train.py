@@ -5,7 +5,7 @@ from transformers import AutoTokenizer,DataCollatorForTokenClassification,Traini
 import numpy as np
 from sklearn.metrics import f1_score
 
-import dataset_helper as dataset_helper
+import dataset_helper
 
 program_call_format = "train.py training_code epochs max_training_size"
 example_program_call = "train.py en_ewt 5 -1"
@@ -77,7 +77,7 @@ def get_pre_tuned_model():
 
 data_collator = DataCollatorForTokenClassification(tokenizer=tokenizer)
 
-def train_model(model,output_directory,training_set,eval_set):
+def train_model(model,output_directory,training_set,eval_set,epochs):
     from transformers import TrainingArguments,Trainer
 
     training_args = TrainingArguments(
@@ -85,7 +85,7 @@ def train_model(model,output_directory,training_set,eval_set):
         learning_rate=2e-5,
         per_device_train_batch_size=BATCH_SIZE,
         per_device_eval_batch_size=BATCH_SIZE,
-        num_train_epochs=5,
+        num_train_epochs=epochs,
         weight_decay=0.01,
         eval_strategy="epoch",
         save_strategy="epoch",
@@ -137,6 +137,8 @@ def main():
 
     epochs = int(epochs)
     max_training_size = int(max_training_size)
+    training_code = typing.cast(dataset_helper.DatasetCode,training_code)
+
     
     training_set = dataset_helper.get_dataset(training_code,"train")
     eval_set = dataset_helper.get_dataset(training_code,"test")
@@ -151,7 +153,7 @@ def main():
 
     model = get_pre_tuned_model()
 
-    trained = train_model(model,f"models/{training_code}_model",training_set,eval_set)
+    trained = train_model(model,f"models/{training_code}_model",training_set,eval_set,epochs)
 
     
     
