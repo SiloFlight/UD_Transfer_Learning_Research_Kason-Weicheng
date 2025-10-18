@@ -4,8 +4,7 @@ from datasets import Dataset
 from conllu import parse_incr
 from os import path
 
-DatasetCode = Literal["en_ewt","fr_gsd","es_gsd","pt_gsd","ur_udtb","ug_udt","vi_vtb","fa_perdt"]
-DatasetType = Literal["train","test","dev"]
+from my_globals import *
 
 datasetCode2Directory : dict[DatasetCode,str] = {
     "en_ewt" : "../datasets/UD_English-EWT",
