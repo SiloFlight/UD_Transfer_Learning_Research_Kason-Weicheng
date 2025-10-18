@@ -22,8 +22,9 @@ def get_rel_model_path(model_code : DatasetCode) -> str:
     return curr_dir
 
 def get_model(model_code : DatasetCode):
-    return AutoModelForTokenClassification.from_pretrained(get_rel_model_path(model_code),
+    return AutoModelForTokenClassification.from_pretrained("./"+get_rel_model_path(model_code),
         num_labels=len(UPOS_TAGS),
         label2id=label2id,
         id2label=id2label,
+        
     )
