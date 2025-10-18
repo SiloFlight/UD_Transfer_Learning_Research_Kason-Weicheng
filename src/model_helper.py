@@ -17,7 +17,7 @@ def get_rel_model_path(model_code : DatasetCode) -> str:
         if os.path.isdir(full_path):
             x = int(entry_name.split("-")[-1])
             if x > curr_iter:
-                curr_dir = model_dir+entry_name
+                curr_dir = model_dir+"/"+entry_name
         
     return curr_dir
 
