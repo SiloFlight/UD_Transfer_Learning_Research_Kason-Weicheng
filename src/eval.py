@@ -7,13 +7,8 @@ from sklearn.metrics import f1_score
 
 import dataset_helper,model_helper
 
-<<<<<<< HEAD
 program_call_format = "eval.py model_code eval_code"
 example_program_call = "eval.py en_ewt en_ewt"
-=======
-program_call_format = "train.py model_code eval_code"
-example_program_call = "train.py en_ewt en_ewt"
->>>>>>> c787a4a4cd021af250c46688b924c5a269230545
 
 ## Configs
 BATCH_SIZE = 16
