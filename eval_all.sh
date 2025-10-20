@@ -6,4 +6,5 @@ for CODE in "${TRAINING_CODES[@]}"; do
         echo "=== Evaluating $CODE on $CODE2"
         python3.12 src/eval.py "$CODE" "$CODE2"
         echo "=== Finished evaluating $CODE on $CODE2"
+    done
 done
