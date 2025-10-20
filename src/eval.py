@@ -133,7 +133,9 @@ def main():
         data_collator=data_collator,
     )
 
-    trainer.evaluate()
+    res = trainer.evaluate()
+    
+    print(res)
 
     
     
