@@ -128,7 +128,9 @@ def main():
     trainer = Trainer(
         model,
         eval_dataset=eval_set.map(tokenize_and_align,batched=True,remove_columns=eval_set.column_names),
-        compute_metrics=compute_metrics
+        compute_metrics=compute_metrics,
+        processing_class=tokenizer,
+        data_collator=data_collator,
     )
 
     trainer.evaluate()
