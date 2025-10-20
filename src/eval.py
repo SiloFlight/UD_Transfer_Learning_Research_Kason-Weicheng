@@ -1,5 +1,6 @@
 import sys
 import typing
+import os
 
 from transformers import AutoTokenizer,DataCollatorForTokenClassification,TrainingArguments,Trainer,AutoModelForTokenClassification
 import numpy as np
@@ -134,8 +135,12 @@ def main():
     )
 
     res = trainer.evaluate()
-    
-    print(res)
+
+    save_path = f"results/{model_code}-{eval_code}.txt"
+    os.makedirs(os.path.dirname(save_path),exist_ok=True)
+
+    with open(save_path,"w") as f:
+        f.write(str(res))
 
     
     
