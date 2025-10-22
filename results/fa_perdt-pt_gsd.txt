@@ -1,0 +1,1 @@
+{'eval_loss': 0.8654565215110779, 'eval_token_acc': 0.7638910950853004, 'eval_f1_macro': 0.516704539964823, 'eval_runtime': 13.234, 'eval_samples_per_second': 90.675, 'eval_steps_per_second': 2.871}
