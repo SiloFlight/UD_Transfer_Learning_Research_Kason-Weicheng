@@ -4,7 +4,7 @@ import os
 
 from transformers import AutoTokenizer,DataCollatorForTokenClassification,TrainingArguments,Trainer,AutoModelForTokenClassification
 import numpy as np
-from sklearn.metrics import f1_score
+from sklearn.metrics import precision_recall_fscore_support, f1_score
 
 import dataset_helper,model_helper
 
@@ -13,6 +13,17 @@ example_program_call = "eval.py en_ewt en_ewt"
 
 ## Configs
 BATCH_SIZE = 16
+
+
+
+from transformers import AutoTokenizer,AutoModelForTokenClassification,DataCollatorForTokenClassification
+
+UPOS_TAGS = ["ADJ","ADP","ADV","AUX","CCONJ","DET","INTJ","NOUN","NUM","PART","PRON","PROPN","PUNCT","SCONJ","SYM","VERB","X"]
+
+label2id = {l:i for i,l in enumerate(UPOS_TAGS)}
+id2label = {i:l for l,i in label2id.items()}
+
+label_list = [id2label[i] for i in range(len(id2label))]
 
 def validateProgramCall():
     if len(sys.argv) != len(program_call_format.split(" ")):
@@ -32,31 +43,51 @@ def validateProgramCall():
     
     return True
 
+label_ids = np.arange(len(label_list))
+
 def compute_metrics(p):
-    logits, labels = p
-    preds = np.argmax(logits, axis=2)
+        logits, labels = p
+        preds = np.argmax(logits, axis=2)
 
-    y_true, y_pred = [], []
-    for pred_row, lab_row in zip(preds, labels):
-        for p_i, l_i in zip(pred_row, lab_row):
-            if l_i != -100:         # ignore subword/CLS/SEP
-                y_true.append(l_i)
-                y_pred.append(p_i)
+        y_true, y_pred = [], []
+        for pred_row, lab_row in zip(preds, labels):
+            for p_i, l_i in zip(pred_row, lab_row):
+                if l_i != -100:
+                    y_true.append(l_i)
+                    y_pred.append(p_i)
 
-    y_true = np.array(y_true)
-    y_pred = np.array(y_pred)
+        y_true = np.array(y_true)
+        y_pred = np.array(y_pred)
 
-    acc = (y_true == y_pred).mean()
-    f1  = f1_score(y_true, y_pred, average="macro")  # macro over 17 UPOS classes
-    return {"token_acc": acc, "f1_macro": f1}
+        # Overall metrics
+        acc = (y_true == y_pred).mean()
+        f1_macro = f1_score(y_true, y_pred, average="macro")
 
+        # Per-tag metrics (aligned to label_list / label_ids)
+        prec, rec, f1, supp = precision_recall_fscore_support(
+            y_true, y_pred,
+            labels=label_ids,
+            average=None,
+            zero_division=0
+        )
 
-from transformers import AutoTokenizer,AutoModelForTokenClassification,DataCollatorForTokenClassification
+        assert isinstance(prec, np.ndarray)
+        assert isinstance(rec, np.ndarray)
+        assert isinstance(f1, np.ndarray)
+        assert isinstance(supp, np.ndarray)
 
-UPOS_TAGS = ["ADJ","ADP","ADV","AUX","CCONJ","DET","INTJ","NOUN","NUM","PART","PRON","PROPN","PUNCT","SCONJ","SYM","VERB","X"]
+        # Flatten into a dict of scalars for HF Trainer
+        metrics = {
+            "token_acc": acc,
+            "f1_macro": f1_macro,
+        }
+        for i, tag in enumerate(label_list):
+            metrics[f"precision_{tag}"] = float(prec[i])
+            metrics[f"recall_{tag}"]    = float(rec[i])
+            metrics[f"f1_{tag}"]        = float(f1[i])
+            metrics[f"support_{tag}"]   = int(supp[i])
 
-label2id = {l:i for i,l in enumerate(UPOS_TAGS)}
-id2label = {i:l for l,i in label2id.items()}
+        return metrics
 
 tokenizer = AutoTokenizer.from_pretrained("bert-base-multilingual-cased")
 
