@@ -82,10 +82,7 @@ def compute_metrics(p):
             "f1_macro": f1_macro,
         }
         for i, tag in enumerate(label_list):
-            metrics[f"precision_{tag}"] = float(prec[i])
-            metrics[f"recall_{tag}"]    = float(rec[i])
             metrics[f"f1_{tag}"]        = float(f1[i])
-            metrics[f"support_{tag}"]   = int(supp[i])
 
         return metrics
 
