@@ -83,6 +83,7 @@ def compute_metrics(p):
         }
         for i, tag in enumerate(label_list):
             metrics[f"f1_{tag}"]        = float(f1[i])
+            metrics[f"support_{tag}"] = float(supp[i])
 
         return metrics
 
