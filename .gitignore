@@ -2,7 +2,9 @@
 
 **/__pycache__/
 
-/projectEnv
+/venv
+
+**/lang2vec
 
 /models
 /datasets
