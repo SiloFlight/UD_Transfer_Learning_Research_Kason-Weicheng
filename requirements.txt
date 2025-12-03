@@ -73,7 +73,7 @@ seqeval==1.2.2
 setuptools==80.9.0
 six==1.17.0
 stack-data==0.6.3
-sympy==1.14.0
+sympy==1.13.1
 threadpoolctl==3.6.0
 tokenizers==0.22.0
 torch>=2.5.1
