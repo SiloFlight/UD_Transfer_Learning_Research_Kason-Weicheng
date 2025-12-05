@@ -40,6 +40,21 @@ lang2UDcode = {
     "ar" : "ar_padt",
 }
 
+lang2ISO3 = {
+    "en" : "eng",
+    "es" : "spa",
+    "fr" : "fra",
+    "fa" : "fas",
+    "pt" : "por",
+    "ur" : "urd",
+    "ug" : "uig",
+    "vi" : "vie",
+    "de" : "deu",
+    "zh" : "zho",
+    "he" : "heb",
+    "ar" : "ara",
+}
+
 model2modelname = {
     "mbert" : "bert-base-multilingual-cased",
     "xlmr" : "xlm-roberta-base",

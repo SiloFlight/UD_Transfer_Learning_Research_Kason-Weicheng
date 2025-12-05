@@ -63,7 +63,7 @@ def main():
     distance_matrix = pd.DataFrame(index=langs, columns=langs, dtype=float)
     for a in langs:
         for b in langs:
-            d = l2v.distance("genetic",a, b)
+            d = l2v.distance("genetic", lang2ISO3[a],lang2ISO3[b])
             distance_matrix.loc[a,b] = d
 
     ## Create Accuracy Matrix
@@ -73,7 +73,7 @@ def main():
             records.append({
             "train_lang": trained_lang,
             "eval_lang": eval_lang,
-            "accuracy": eval_data[trained_lang][eval_lang]["token_acc"]
+            "accuracy": eval_data[trained_lang][eval_lang]["eval_token_acc"]
         })
     df = pd.DataFrame(records)
     
